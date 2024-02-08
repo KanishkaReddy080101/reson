@@ -10,7 +10,7 @@ const nextConfig = {
   async rewrites() {
 		return [
 			{
-				source: "/api/:path*",
+				source: "/reson/:path*",
 				destination:
 					"https://resonapi.uarl.in/:path*",
 					// "http://localhost:4000/:path*",

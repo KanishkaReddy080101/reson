@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react';
 import AWS from 'aws-sdk';
 import Modal from 'react-modal';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
+import JobQuestions from '../components/jobQuestions';
 
 AWS.config.update({
   accessKeyId: 'AKIA5FTZEE4RFEEHWNNQ',
@@ -14,6 +16,7 @@ Modal.setAppElement('body');
 const s3 = new AWS.S3();
 
 const Home = () => {
+  const router = useRouter();
   const videoElement = useRef(null);
   const [stream, setStream] = useState(null);
   const mediaRecorder = useRef(null);
@@ -32,6 +35,9 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
   const [selectedJobLink, setSelectedJobLink] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+const [editedJobTitle, setEditedJobTitle] = useState('');
+const [editedJobDescription, setEditedJobDescription] = useState('');
   const [isJobDetailsModalOpen, setIsJobDetailsModalOpen] = useState(false);
   const openJobDetailsModal = (job) => {
     setIsJobDetailsModalOpen(true);
@@ -52,7 +58,7 @@ const Home = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await fetch('api/jobs');
+        const response = await fetch('reson/jobs');
         if (response.ok) {
           const jobs = await response.json();
           setFetchedJobs(jobs);
@@ -67,6 +73,9 @@ const Home = () => {
 
     fetchJobs();
   }, []);
+  const handleLogout = () => {
+    router.push('/login');
+  };
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -89,6 +98,7 @@ const Home = () => {
 
   const CloseRecording = () => {
     setIsRecordingModalOpen(false);
+    window.location.reload();
   }
 
   const startRecording = async () => {
@@ -136,7 +146,7 @@ const Home = () => {
     };
   
     try {
-      const response = await fetch('api/question', {
+      const response = await fetch('reson/question', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -217,7 +227,7 @@ const Home = () => {
     };
 
     try {
-      const response = await fetch('api/jobs', {
+      const response = await fetch('reson/jobs', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -249,13 +259,77 @@ const Home = () => {
     setCurrentVideoUrl(null);
     recordedChunks.current = [];
   };
+  const handleCancelUpload = () => {
+    setIsRecordingStopped(false);
+    setCurrentVideoUrl(null);
+    recordedChunks.current = [];
+    setIsLoading(false);
+  };
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+    setEditedJobTitle(selectedJob.job_title);
+    setEditedJobDescription(selectedJob.job_description);
+    
+  };
+
+  const addQuestionClick = () => {
+    setIsEditing(false);
+    closeJobDetailsModal();
+    setIsRecordingModalOpen(true); // Open the recording modal
+  startRecording();
+  }
+  
+  const handleSaveChanges = async () => {
+    // Make API call to update job details
+    const updatedJobData = {
+      employer_id: 1,
+      job_id: selectedJob.job_id,
+      job_title: editedJobTitle,
+      job_category: 'IT',
+      job_description: editedJobDescription,
+      job_video_link: 'null',
+      date_updated: new Date().toISOString(),
+      
+    };
+  
+    try {
+      const response = await fetch(`reson/jobs/${selectedJob.job_id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedJobData),
+      });
+  
+      if (response.ok) {
+        const updatedJob = await response.json();
+        // Update selected job details
+        setSelectedJob(updatedJob);
+        toast.success('Job details updated successfully!');
+        setIsEditing(false);
+      } else {
+        toast.error('Error updating job details. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error updating job details:', error.message);
+      toast.error('Error updating job details. Please try again.');
+    }
+  };
+  
+  const addAnswers = () => {
+    router.push(`/job/${selectedJob.job_id}`)
+  }
 
   return (
     <>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         {/* Left Navbar */}
         <div style={{ backgroundColor: '#fff', padding: '20px', color: '#fff', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <button style={{ backgroundColor: '#000', color: '#fff', border: 'none', fontSize: '16px', fontWeight: '500', borderRadius: '5px', marginTop: '2.2rem', height: '40px', lineHeight: '22px', padding: '9px 14px' }} onClick={openModal}>Create Job</button>
+          <button style={{ backgroundColor: '#000', color: '#fff', border: 'none', fontSize: '16px', fontWeight: '500', borderRadius: '5px', marginTop: '2.2rem', height: '40px', lineHeight: '22px', padding: '9px 14px', width: '130px' }} onClick={openModal}>Create Job</button>
+          <button onClick={handleLogout} style={{ backgroundColor: 'red', color: 'white', padding: '10px', borderRadius: '5px', border: 'none', fontSize: '16px', fontWeight: '500', marginTop: '75vh', height: '40px', lineHeight: '22px', padding: '9px 14px', width: '130px' }}>
+      Logout
+    </button>
         </div>
 
         {/* Right Content */}
@@ -345,18 +419,42 @@ const Home = () => {
 
 {selectedJob && (
   <Modal
-    isOpen={isJobDetailsModalOpen}
-    onRequestClose={closeJobDetailsModal}
-    contentLabel="Job Details Modal"
-    // Add your styles for the job details modal here
-  >
-    <div style={{ textAlign: 'center' }}>
-      <h3>Selected Job: {selectedJob.job_title}</h3>
-      <p>Unique Link: {selectedJobLink}</p>
-      {/* Add other job details as needed */}
-      <button onClick={closeJobDetailsModal}>Close</button>
+  isOpen={isJobDetailsModalOpen}
+  onRequestClose={closeJobDetailsModal}
+  contentLabel="Job Details Modal"
+>
+  <div style={{ textAlign: 'center' }}>
+    <h3>Selected Job: {selectedJob.job_title}</h3>
+    {isEditing ? (
+      <>
+        <input
+          type="text"
+          value={editedJobTitle}
+          onChange={(e) => setEditedJobTitle(e.target.value)}
+        />
+        <br />
+        <textarea
+          value={editedJobDescription}
+          onChange={(e) => setEditedJobDescription(e.target.value)}
+        />
+        <br />
+        <button onClick={handleSaveChanges}>Save Changes</button>
+      </>
+    ) : (
+      <>
+        <p>Job Description: {selectedJob.job_description}</p>
+        <div style={{ display: 'flex', gap: '20px', alignItems: 'center', justifyContent: 'center'}}>
+        <button onClick={handleEditClick}>Edit</button>
+        <button onClick={addQuestionClick}>Add Question</button>
+        <button onClick={addAnswers}>Link</button>
+    <button onClick={closeJobDetailsModal}>Close</button>
     </div>
-  </Modal>
+        {/* <JobQuestions jobId={selectedJob.job_id} fetchedJobs={fetchedJobs} jobDetails={jobDetails} /> */}
+      </>
+    )}
+  </div>
+</Modal>
+
 )}
 
 
@@ -390,7 +488,7 @@ const Home = () => {
   }}
 >
   <div style={{ textAlign: 'center', position: 'relative' }}>
-    <video ref={videoElement} style={{ width: '100%', height: '50%' }} autoPlay></video>
+    <video ref={videoElement} style={{ width: '100%', height: '100%' }} autoPlay></video>
     <div style={{ position: 'absolute', top: '20px', right: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <button style={{ backgroundColor: 'transparent', color: '#fff', padding: '15px', borderRadius: '50%', border: 'none', height: '50px', width: '50px', marginBottom: '20px', fontSize: '14px' }} onClick={CloseRecording}>
         <span style={{ fontSize: '22px' }}>X</span>
@@ -399,24 +497,28 @@ const Home = () => {
       </button>
     </div>
     <div style={{ position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)' }}>
-      {isRecordingStopped ? (
-        <>
-          {currentVideoUrl && <video controls style={{ width: '100%' }} src={currentVideoUrl} />}
-          <button style={{ backgroundColor: '#000', color: '#fff', border: 'none', fontSize: '16px', fontWeight: '500', borderRadius: '5px', marginTop: '2.2rem', height: '40px', lineHeight: '22px', padding: '9px 14px' }} onClick={handleUploadClick}>Upload</button>
-        </>
-      ) : (
-        <>
-         {isLoading && (
-  <div style={{ position: 'absolute', top: '0', left: '0', right: '0', bottom: '0', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent' }}>
-    <p style={{ color: 'white', fontSize: '48px'}}>Loading...</p>
-  </div>
+    {isRecordingStopped ? (
+  <>
+    {currentVideoUrl && <video controls style={{ width: '100%' }} src={currentVideoUrl} />}
+    <div>
+      <button style={{ backgroundColor: '#000', color: '#fff', border: 'none', fontSize: '16px', fontWeight: '500', borderRadius: '5px', marginTop: '2.2rem', height: '40px', lineHeight: '22px', padding: '9px 14px' }} onClick={handleUploadClick}>Upload</button>
+      <button style={{ backgroundColor: '#FF0000', color: '#fff', border: 'none', fontSize: '16px', fontWeight: '500', borderRadius: '5px', marginTop: '2.2rem', height: '40px', lineHeight: '22px', padding: '9px 14px', marginLeft: '10px' }} onClick={handleCancelUpload}>Cancel</button>
+    </div>
+  </>
+) : (
+  <>
+    {isLoading && (
+      <div style={{ position: 'absolute', top: '0', left: '0', right: '0', bottom: '0', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent' }}>
+        <p style={{ color: 'white', fontSize: '48px'}}>Loading...</p>
+      </div>
+    )}
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '20rem', gap: '2rem',position: 'absolute', bottom: '2rem' }}>
+      <button style={{ backgroundColor: 'rgb(227, 23, 78)', color: '#FF0000', padding: '15px', borderRadius: '50%', border: '1px solid rgba(255, 255, 255, 0.24)', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px', height: '80px', width: '80px', outline: 'rgba(255, 255, 255, 0.3) solid 8px' }} onClick={startRecording}>.</button>
+      <button style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', color: '#fff', padding: '15px', borderRadius: '50%', border: 'none', height: '48px', width: '48px' }} onClick={closeRecordingModal}>X</button>
+    </div>
+  </>
 )}
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '20rem', gap: '2rem' }}>
-            <button style={{ backgroundColor: 'rgb(227, 23, 78)', color: '#FF0000', padding: '15px', borderRadius: '50%', border: '1px solid rgba(255, 255, 255, 0.24)', boxShadow: 'rgba(0, 0, 0, 0.1) 0px 10px 30px', height: '80px', width: '80px', outline: 'rgba(255, 255, 255, 0.3) solid 8px' }} onClick={startRecording}>.</button>
-            <button style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', color: '#fff', padding: '15px', borderRadius: '50%', border: 'none', height: '48px', width: '48px' }} onClick={closeRecordingModal}>X</button>
-          </div>
-        </>
-      )}
+
     </div>
   </div>
 </Modal>
