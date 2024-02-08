@@ -31,7 +31,7 @@ export default function SignUpPage() {
         return;
       }
   
-      const response = await axios.post('api/user_accounts', {
+      const response = await axios.post('reson/user_accounts', {
         user_name: fullName,
         user_email_address: email,
         password: password,
