@@ -1,0 +1,101 @@
+/* styles.css
+
+/* Container Styles */
+/* .container-fluid {
+    display: flex;
+    padding: 0;
+    margin: 0;
+  } */
+  
+  /* .left-container {
+    position: relative;
+    background-size: cover;
+    height: 100vh;
+    width: 100%;
+  }
+  
+  .right-container {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: flex-end;
+    background-size: cover;
+    height: 100vh;
+    width: 50vw;
+    z-index: 2;
+    right: 0;
+  } */
+  
+  /* Login Button Styles */
+  /* .login-text {
+    color: white;
+  }
+  
+  .login-button {
+    background: none;
+    border-radius: 4;
+    border: 1px solid white;
+    color: white;
+    margin: 2px 0;
+  }
+   */
+  /* Form Styles */
+  /* .form-container {
+    position: absolute;
+    right: 2rem;
+    top: 12vh;
+    z-index: 5;
+    width: 40%;
+  }
+  
+  .card-container {
+    width: 100%;
+    border-radius: 16px;
+  }
+  
+  .card-title {
+    font-size: 3rem;
+  } */
+  
+  /* Input Styles */
+  /* .form-input {
+    height: 6vh;
+    background: #F5F5F5;
+    color: #828282;
+    border: none;
+    margin-bottom: 1rem;
+  } */
+  
+  /* Sign Up Button Styles */
+  /* .signup-button {
+    background: #EEFFB5;
+    border-radius: 6px;
+    border: 1px solid;
+  } */
+  
+  /* Or Separator Styles */
+  /* .separator {
+    margin: 1rem 0;
+  } */
+  
+  /* Social Media Icons Styles */
+  /* .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 2vh;
+  }
+  
+  .icon-circle {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: #fff;
+    margin-right: 2px;
+  }
+  
+  .icon-img {
+    width: 100%;
+    height: 100%;
+  } */
+  

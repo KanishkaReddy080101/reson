@@ -1,0 +1,361 @@
+/* Add these styles to your global CSS or a separate stylesheet */
+body {
+  margin: 0;
+}
+
+/* signup */
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.header-logo {
+  max-width: 159px;
+  max-height: 107px;
+}
+
+.nav-logo {
+  max-width: 140px;
+}
+
+.sign-in-left-pannel-container {
+  background-color: #FBF7F0;
+  min-height: 100vh;
+}
+
+.signup-subheading{
+  padding-top: 20px;
+  font-size: 35px;
+  line-height: 45px;
+  color: #000000;
+  font-family: 'Montagu Slab';
+}
+.signup-info{
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: 300;
+  color: #1B1B1B;
+  font-family: 'Public Sans';
+}
+
+.sign-in-right-pannel-container {
+  background: #FBF7F0;
+  padding-right: 25px;
+  min-height: 100vh;
+}
+
+.sign-in-inner{
+  background: #5FEBEB;
+  height: 95vh;
+  width: 100%;
+  border-radius: 15px;
+  position: relative;
+}
+.sign-in-inner-banner{
+  position: absolute;
+  max-height: 400px;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, -10%);
+}
+.element-right-img {
+  height: 40%;
+  right: 0;
+  position: absolute;
+}
+
+.element-left-img {
+  height: 20%;
+  top: 40%;
+  left: 0;
+  position: absolute;
+}
+
+
+.sign-in-quote{
+  height: 3%;
+  bottom: 25%;
+  left: 8%;
+  position: absolute;
+}
+.sign-in-quote-text{
+  bottom: 10%;
+  left: 8%;
+  right: 10%;
+  position: absolute;
+  font-size: 28px;
+  line-height: 32px;
+  color: #000000;
+  text-align: left;
+  font-family: 'Public Sans';
+
+}
+
+.sign-in-quote-author{
+  bottom: 5%;
+  left: 8%;
+  right: 10%;
+  position: absolute;
+  font-size: 15px;
+  color: #000000;
+  text-align: left;
+  font-family: 'Public Sans';
+  font-weight: 400;
+}
+.sign-in-quote-designation{
+  bottom: 3%;
+  left: 8%;
+  right: 10%;
+  position: absolute;
+  font-size: 10px;
+  color: #000000;
+  text-align: left;
+  font-family: 'Public Sans';
+  font-weight: 500;
+}
+@media only screen and (max-width: 980px) {
+  .sign-in-right-pannel-container {
+    display: none !important;
+  }
+}
+
+
+/*  Login Form */
+
+.Login-form{
+  justify-content: center;
+  display: flex;
+}
+
+.single-input{
+  border:1px solid #2A2A2A;
+  border-radius: 5px;
+  display: flex;
+  margin-bottom: 2px;
+  
+}
+.single-input i{
+  padding: 12px 12px;
+  color: #2A2A2A;
+}
+.single-input input{
+  border:0px solid #2A2A2A;
+  border-radius: 5px;
+  width: 100%;
+  outline: none;
+  height: 40px;
+  font-size: 18px;
+  background-color: transparent;
+  font-family: Public Sans;
+  font-size: 11.5px;
+}
+
+label {
+  background-color: transparent;
+  font-family: Public Sans;
+  font-size: 11.5px;
+  line-height: 14.69px;
+  color: #1B1B1B;
+}
+.submit-btn{
+   border:0px solid #c1c1c1;
+   margin-top: 20px;
+  
+}
+.submit-btn button{
+    background: linear-gradient(90deg, #5FEBEB 0%, #EEFFB5 101.11%);
+   ;
+   color: #1B1B1B;
+   cursor: pointer; 
+   width: 100%;
+   padding: 12px;
+   font-family: Public Sans;
+  font-size: 13.5px;
+  line-height: 14.69px;
+  font-weight: 600;
+  border: none;
+}
+.forgot-password{
+  font-family: Public Sans;
+  font-size: 11.5px;
+  line-height: 14.69px;
+  color: #1B1B1B;
+  float: right;
+  padding-top: 7px;
+}
+
+button.sign-up__social-button {
+  font-family: Public Sans;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0em;
+  text-align: center;
+  width: -webkit-fill-available;
+  padding: 10px;
+  border: 1px solid #c1c1c1;
+  border-radius: 5px;
+}
+
+.noaccount{
+  padding-top: 20px;
+  font-family: Public Sans;
+font-size: 10px;
+font-weight: 600;
+line-height: 11px;
+letter-spacing: 0em;
+text-align: center;
+
+
+
+}
+
+.signup-link{
+  font-family: Public Sans;
+font-size: 10px;
+font-weight: 300;
+line-height: 11px;
+letter-spacing: 0em;
+text-align: center;
+color: #1B1B1B;
+}
+
+
+.password-info{
+  font-family: Public Sans;
+font-size: 9px;
+font-weight: 300;
+line-height: 11px;
+letter-spacing: 0em;
+text-align: left;
+  color: #1B1B1B;
+}
+
+.divider {
+  font-family: Public Sans;
+font-size: 13px;
+font-weight: 300;
+  display: flex;
+  align-items: center;
+  color: #1B1B1B;
+  padding: 10px 0px;
+}
+
+.divider::before, .divider::after {
+  flex: 1;
+  content: '';
+  padding: 1px;
+  background-color: #1B1B1B;
+  margin: 5px;
+}
+
+/* .new-left-container {
+  background: url('/AdobeStock_363900018.jpeg');
+  background-size: cover;
+  height: 100vh;
+  width: 100%;
+}
+
+.new-reson-logo {
+  height: 10vh;
+  position: absolute;
+  top: 2vh;
+}
+
+.new-right-container {
+  background: url('/Vector 2.png');
+  background-size: cover;
+  height: 100vh;
+  width: 50vw;
+  z-index: 2;
+  right: 0;
+}
+
+.new-login-text {
+  color: white;
+}
+
+.new-login-button {
+  background: none;
+  border-radius: 4;
+  border: 1px white solid;
+  color: white;
+}
+
+.new-signup-form {
+  position: absolute;
+  right: 2rem;
+  top: 12vh;
+  z-index: 5;
+  width: 40%;
+}
+
+.new-card-style {
+  width: 100%;
+  border-radius: 16px;
+}
+
+.new-card-title {
+  font-size: 3rem;
+}
+
+.new-card-subtitle {
+  color: #BDBDBD;
+}
+
+.new-input-style {
+  height: 6vh;
+  background: #F5F5F5 !important;
+  color: #828282;
+  border: none !important;
+}
+
+.new-signup-button {
+  background: #EEFFB5 !important;
+  border-radius: 6;
+  border: none !important;
+  color: black !important;
+}
+
+.new-or-text {
+  margin-top: 4px;
+  margin-bottom: 2px;
+}
+
+.new-social-media-text {
+  color: #BDBDBD;
+}
+
+.new-social-media-icons {
+  gap: 2vh;
+}
+
+.new-icon-style {
+  width: 35px;
+  height: 35px;
+} */
+
+/* Media Queries for Tablet and Mobile */
+/* @media (max-width: 768px) {
+  .new-signup-form {
+    width: 80%;
+    right: 1rem;
+  }
+
+  .new-right-container {
+    width: 100%;
+  }
+
+  .new-card-title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .new-signup-form {
+    width: 90%;
+    right: 0.5rem;
+  }
+} */
